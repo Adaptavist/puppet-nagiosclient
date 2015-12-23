@@ -1,0 +1,5 @@
+fixtures:
+  repositories:
+      repo: "https://github.com/Adaptavist/puppetlabs-stdlib"
+  symlinks:
+    nagiosclient: "#{source_dir}"

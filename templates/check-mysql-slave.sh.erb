@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# load RVM
+. /etc/profile.d/rvm.sh
+
+<%= @plugin_path %>/check-mysql-slave.rb $@
