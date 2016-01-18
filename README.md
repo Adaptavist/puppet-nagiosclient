@@ -1,4 +1,6 @@
 # Nagios Client Configuration
+[![Build Status](https://travis-ci.org/Adaptavist/puppet-nagiosclient.svg?branch=master)](https://travis-ci.org/Adaptavist/puppet-nagiosclient)
+
 This contains the configuration for the Nagios NRPE server (the part that runs on the server)
 
 ## Configuration 
