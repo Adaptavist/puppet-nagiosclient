@@ -72,9 +72,9 @@ describe 'nagiosclient', :type => 'class' do
     end
   end
 
-  custom_plugins     = ['mysql_replication_plugin']
+  custom_plugins     = ['mysql_replication_plugin', 'postgres_plugin']
 
-  context "Should install package, service, config file and mysql replication plugin on Debian" do
+  context "Should install package, service, config file and mysql replication/postgres plugins on Debian" do
     let(:facts) {{
       :osfamily => 'Debian',
       :client => client,
@@ -105,6 +105,19 @@ describe 'nagiosclient', :type => 'class' do
         'mode'    => '0755',
         'source'  => "puppet:///modules/nagiosclient/check-mysql-slave.rb"
       )
+      should contain_file('/usr/lib/nagios/plugins/check-mysql-slave.sh').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+      )
+      should contain_file('/usr/lib/nagios/plugins/check_postgres.pl').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+        'source'  => "puppet:///modules/nagiosclient/check_postgres.pl"
+      )
       should contain_package('ruby-dev')
       should contain_package('libmysqlclient-dev')
       should contain_service(deb_service).with(
@@ -114,7 +127,7 @@ describe 'nagiosclient', :type => 'class' do
     end
   end
 
-  context "Should install package, service, config file and mysql replication plugin on RedHat" do
+  context "Should install package, service, config file and mysql replication/postgres plugins on RedHat" do
     let(:facts) {{
       :osfamily => 'RedHat',
       :client => client,
@@ -146,6 +159,20 @@ describe 'nagiosclient', :type => 'class' do
         'mode'    => '0755',
         'source'  => "puppet:///modules/nagiosclient/check-mysql-slave.rb"
       )
+      should contain_file('/usr/lib64/nagios/plugins/check-mysql-slave.sh').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+      )
+      should contain_file('/usr/lib64/nagios/plugins/check_postgres.pl').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+        'source'  => "puppet:///modules/nagiosclient/check_postgres.pl"
+      )
+
       should contain_package('ruby-devel')
       should contain_package('mysql-devel')
       should contain_service(red_service).with(
@@ -184,6 +211,8 @@ describe 'nagiosclient', :type => 'class' do
         'notify'  => "Service[#{deb_service}]"
       )
       should_not contain_file('/usr/lib/nagios/plugins/check-mysql-slave.rb')
+      should_not contain_file('/usr/lib/nagios/plugins/check-mysql-slave.sh')
+      should_not contain_file('/usr/lib/nagios/plugins/check_postgres.pl')
       should_not contain_package('ruby-dev')
       should_not contain_package('libmysqlclient-dev')
       should contain_service(deb_service).with(

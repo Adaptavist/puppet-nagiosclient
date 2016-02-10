@@ -62,7 +62,7 @@ installed for Debian based systems, this list can be overwritten in hiera, below
 
 ### Custom Plugins 
 
-Custom plugins can also be installed (currently only mysql replication checker is supported), each plugin has its own class 
+Custom plugins can also be installed (currently only mysql replication checker / postgres checker is supported), each plugin has its own class 
 and are loaded via the custom_plugins array.  This array can be set at global or host level (via host hash), these arrays can either 
 be merged together or the host array can be used on its own, the merging behavior is controlled by the merge_plugins boolean 
 (which can itself be set at global or host level), below are some hiera examples: 
