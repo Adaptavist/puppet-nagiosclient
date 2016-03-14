@@ -1,5 +1,5 @@
 name 'adaptavist-nagiosclient'
-version '0.1.8'
+version '0.1.9'
 source 'https://github.com/Adaptavist/puppet-nagiosclient.git'
 author 'adaptavist'
 summary 'Nagiosclient Module' 
