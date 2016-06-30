@@ -5,7 +5,9 @@ class nagiosclient::params {
     $merge_plugins  = true
     $plugin_packages = {
         'Debian' => [],
-        'RedHat' => ['nagios-plugins-procs','nagios-plugins-disk','nagios-plugins-mysql','nagios-plugins-swap', 'nagios-plugins-load', 'nagios-plugins-users', 'nagios-plugins-file_age']
+        'RedHat' => ['nagios-plugins-procs','nagios-plugins-disk','nagios-plugins-mysql',
+                     'nagios-plugins-swap', 'nagios-plugins-load', 'nagios-plugins-users', 
+                     'nagios-plugins-file_age']
     }
     $nrpe_source  = ["puppet:///files/${client}/${environment}/etc/nagios/nrpe_local.cfg",
                      "puppet:///files/${client}/default/etc/nagios/nrpe_local.cfg",
