@@ -1,30 +1,12 @@
 class nagiosclient::mysql_replication_plugin (
-    $present = true
-    )  {
+    $present           = $nagiosclient::params::plugin_present,
+    $file_deps         = $nagiosclient::params::plugin_file_deps,
+    $plugin_path       = $nagiosclient::params::plugin_path,
+    $ruby_dev_package  = $nagiosclient::params::mysql_rep_plugin_ruby_dev_package,
+    $mysql_dev_package = $nagiosclient::params::mysql_rep_mysql_dev_package,
+    ) inherits nagiosclient::params {
 
     if ($present == true) {
-        # set OS specific variables
-        case $::osfamily {
-            Debian: {
-                $ruby_dev_package = 'ruby-dev'
-                $mysql_dev_package = 'libmysqlclient-dev'
-                $plugin_path = '/usr/lib/nagios/plugins'
-                $file_deps = Package['nagios-nrpe-server']
-            }
-            RedHat: {
-                $ruby_dev_package = 'ruby-devel'
-                if (versioncmp($::operatingsystemrelease,'7') >= 0 and $::operatingsystem != 'Fedora') {
-                    $mysql_dev_package = 'mysql-community-devel'
-                } else {
-                    $mysql_dev_package = 'mysql-devel'
-                }
-                $plugin_path = '/usr/lib64/nagios/plugins'
-                $file_deps = [Package['nagios-plugins'], Package['nrpe']]
-            }
-            default: {
-                fail("nagiosclient::mysql_replication_plugin - Unsupported Operating System family: ${::osfamily}")
-            }
-        }
         # create plugin script
         file { "${plugin_path}/check-mysql-slave.rb":
             ensure  => file,

@@ -1,30 +1,14 @@
 class nagiosclient  (
-    $custom_plugins = [],
-    $merge_plugins  = true,
-    $plugin_packages = {
-        'Debian' => [],
-        'RedHat' => ['nagios-plugins-procs','nagios-plugins-disk','nagios-plugins-mysql','nagios-plugins-swap', 'nagios-plugins-load', 'nagios-plugins-users', 'nagios-plugins-file_age']
-    },
-    $nrpe_config_file = '/etc/nagios/nrpe_local.cfg',
-    $nrpe_source  = ["puppet:///files/${client}/${environment}/etc/nagios/nrpe_local.cfg",
-                     "puppet:///files/${client}/default/etc/nagios/nrpe_local.cfg",
-                     "puppet:///files/default/${environment}/etc/nagios/nrpe_local.cfg",
-                     'puppet:///files/default/default/etc/nagios/nrpe_local.cfg']
-    )  {
-    case $::osfamily {
-        Debian: {
-            $packageName = 'nagios-nrpe-server'
-            $serviceName = 'nagios-nrpe-server'
-        }
-        RedHat: {
-            $packageName = 'nrpe'
-            $serviceName = 'nrpe'
-            $masterPluginPackage = 'nagios-plugins'
-        }
-        default: {
-            fail("nagiosclient - Unsupported Operating System family: ${::osfamily}")
-        }
-    }
+    $custom_plugins      = $nagiosclient::params::custom_plugins,
+    $merge_plugins       = $nagiosclient::params::merge_plugins,
+    $plugin_packages     = $nagiosclient::params::plugin_packages,
+    $nrpe_config_file    = $nagiosclient::params::nrpe_config_file,
+    $nrpe_source         = $nagiosclient::params::nrpe_source,
+    $packageName         = $nagiosclient::params::nrpePackageName,
+    $serviceName         = $nagiosclient::params::nrpeServiceName,
+    $masterPluginPackage = $nagiosclient::params::masterPluginPackage,
+
+    ) inherits nagiosclient::params {
 
     #custom_plugins can be set at either global or host level, therefore check to see if the hosts hash exists
     if ($host != undef) {

@@ -53,7 +53,7 @@ describe 'nagiosclient', :type => 'class' do
     it do
       should contain_package(red_package).with_ensure('installed')
       should contain_package('nagios-plugins').with_ensure('installed')
-      should contain_file('/etc/nagios/nrpe_local.cfg').with(
+      should contain_file('/etc/nrpe.d/nrpe_local.cfg').with(
         'ensure'  => 'file',
         'owner'   => 'root',
         'group'   => 'root',
@@ -140,7 +140,7 @@ describe 'nagiosclient', :type => 'class' do
     it do
       should contain_package(red_package).with_ensure('installed')
       should contain_package('nagios-plugins').with_ensure('installed')
-      should contain_file('/etc/nagios/nrpe_local.cfg').with(
+      should contain_file('/etc/nrpe.d/nrpe_local.cfg').with(
         'ensure'  => 'file',
         'owner'   => 'root',
         'group'   => 'root',
@@ -239,7 +239,7 @@ describe 'nagiosclient', :type => 'class' do
       should contain_package('nagios-plugins').with_ensure('installed')
       should contain_package('nagios-plugins-apt').with_ensure('installed')
       should_not contain_package('nagios-plugins-mysql')
-      should contain_file('/etc/nagios/nrpe_local.cfg').with(
+      should contain_file('/etc/nrpe.d/nrpe_local.cfg').with(
         'ensure'  => 'file',
         'owner'   => 'root',
         'group'   => 'root',
