@@ -14,5 +14,13 @@ class nagiosclient::postgres_plugin (
             source  => 'puppet:///modules/nagiosclient/check_postgres.pl',
             require => $file_deps
         }
+
+        # if selinux is enabled, restore default contexts to plugin directory
+        if (str2bool($::selinux)) {
+            exec { 'postgres_plugin_selinux_context':
+                command => "restorecon -R -v ${plugin_path}",
+                require => [Package[$semanage_package],File["${plugin_path}/check_postgres.pl"]],
+            }
+        }
     }
 }

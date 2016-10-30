@@ -19,12 +19,14 @@ class nagiosclient::params {
             $nrpeServiceName = 'nagios-nrpe-server'
             $masterPluginPackage = ''
             $nrpe_config_file = '/etc/nagios/nrpe_local.cfg'
+            $semanage_package = 'policycoreutils-python'
         }
         RedHat: {
             $nrpePackageName = 'nrpe'
             $nrpeServiceName = 'nrpe'
             $masterPluginPackage = 'nagios-plugins'
             $nrpe_config_file = '/etc/nrpe.d/nrpe_local.cfg'
+            $semanage_package = 'policycoreutils'
         }
         default: {
             fail("nagiosclient - Unsupported Operating System family: ${::osfamily}")
@@ -60,6 +62,19 @@ class nagiosclient::params {
             } else {
                 $mysql_rep_mysql_dev_package = 'mysql-devel'
             }
+        }
+        default: {
+            fail("nagiosclient - Unsupported Operating System family: ${::osfamily}")
+        }
+    }
+
+    # defaults for readonly_fs plugin
+    case $::osfamily {
+        Debian: {
+            $readonly_fs_nagios_perl_package = false
+        }
+        RedHat: {
+            $readonly_fs_nagios_perl_package = 'nagios-plugins-perl'
         }
         default: {
             fail("nagiosclient - Unsupported Operating System family: ${::osfamily}")
