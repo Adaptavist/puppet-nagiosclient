@@ -3,6 +3,7 @@ class nagiosclient::readonly_filesystem_plugin (
     $file_deps           = $nagiosclient::params::plugin_file_deps,
     $plugin_path         = $nagiosclient::params::plugin_path,
     $nagios_perl_package = $nagiosclient::params::readonly_fs_nagios_perl_package,
+    $semanage_package    = $nagiosclient::params::semanage_package,
     ) inherits nagiosclient::params {
 
     if ($present == true) {

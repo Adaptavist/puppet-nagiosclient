@@ -4,6 +4,7 @@ class nagiosclient::mysql_replication_plugin (
     $plugin_path       = $nagiosclient::params::plugin_path,
     $ruby_dev_package  = $nagiosclient::params::mysql_rep_plugin_ruby_dev_package,
     $mysql_dev_package = $nagiosclient::params::mysql_rep_mysql_dev_package,
+    $semanage_package    = $nagiosclient::params::semanage_package,
     ) inherits nagiosclient::params {
 
     if ($present == true) {

@@ -8,7 +8,6 @@ class nagiosclient  (
     $serviceName         = $nagiosclient::params::nrpeServiceName,
     $masterPluginPackage = $nagiosclient::params::masterPluginPackage,
     $semanage_package    = $nagiosclient::params::semanage_package,
-
     ) inherits nagiosclient::params {
 
     #custom_plugins can be set at either global or host level, therefore check to see if the hosts hash exists

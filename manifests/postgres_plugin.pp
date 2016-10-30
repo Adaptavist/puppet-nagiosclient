@@ -2,6 +2,7 @@ class nagiosclient::postgres_plugin (
     $present           = $nagiosclient::params::plugin_present,
     $file_deps         = $nagiosclient::params::plugin_file_deps,
     $plugin_path       = $nagiosclient::params::plugin_path,
+    $semanage_package    = $nagiosclient::params::semanage_package,
     ) inherits nagiosclient::params {
 
     if ($present == true) {
