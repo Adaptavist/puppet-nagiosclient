@@ -4,6 +4,7 @@ class nagiosclient::mysql_replication_plugin (
     $plugin_path       = $nagiosclient::params::plugin_path,
     $ruby_dev_package  = $nagiosclient::params::mysql_rep_plugin_ruby_dev_package,
     $mysql_dev_package = $nagiosclient::params::mysql_rep_mysql_dev_package,
+    $semanage_package    = $nagiosclient::params::semanage_package,
     ) inherits nagiosclient::params {
 
     if ($present == true) {
@@ -38,6 +39,13 @@ class nagiosclient::mysql_replication_plugin (
             ensure   => installed,
             provider => gem,
             require  => [Package[$ruby_dev_package], Package[$mysql_dev_package]]
+        }
+        # if selinux is enabled, restore default contexts to plugin directory
+        if (str2bool($::selinux)) {
+            exec { 'mysql_replication_plugin_selinux_context':
+                command => "restorecon -R -v ${plugin_path}",
+                require => [Package[$semanage_package],File["${plugin_path}/check-mysql-slave.rb"],File["${plugin_path}/check-mysql-slave.sh"]],
+            }
         }
     }
 }

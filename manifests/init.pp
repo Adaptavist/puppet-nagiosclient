@@ -7,7 +7,7 @@ class nagiosclient  (
     $packageName         = $nagiosclient::params::nrpePackageName,
     $serviceName         = $nagiosclient::params::nrpeServiceName,
     $masterPluginPackage = $nagiosclient::params::masterPluginPackage,
-
+    $semanage_package    = $nagiosclient::params::semanage_package,
     ) inherits nagiosclient::params {
 
     #custom_plugins can be set at either global or host level, therefore check to see if the hosts hash exists
@@ -81,6 +81,11 @@ class nagiosclient  (
 
     # if we have a list of plugins to install include the classes that will do the work
     if ($custom_plugins_list) {
+        # if selinxu is enabled ensure the semanage package in installed
+        if (str2bool($::selinux) and ! defined(Package[$semanage_package]) ) {
+            ensure_packages([$semanage_package])
+        }
+
         validate_array($custom_plugins_list)
         include $custom_plugins_list
     }
