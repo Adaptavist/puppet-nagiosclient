@@ -1,7 +1,7 @@
 class nagiosclient::params {
 
     # defaults for init
-    $custom_plugins = ['readonly_filesystem_plugin']
+    $custom_plugins = ['nagiosclient::readonly_filesystem_plugin']
     $merge_plugins  = true
     $plugin_packages = {
         'Debian' => [],
@@ -14,14 +14,14 @@ class nagiosclient::params {
                      "puppet:///files/default/${environment}/etc/nagios/nrpe_local.cfg",
                      'puppet:///files/default/default/etc/nagios/nrpe_local.cfg']
     case $::osfamily {
-        Debian: {
+        'Debian': {
             $nrpePackageName = 'nagios-nrpe-server'
             $nrpeServiceName = 'nagios-nrpe-server'
             $masterPluginPackage = ''
             $nrpe_config_file = '/etc/nagios/nrpe_local.cfg'
             $semanage_package = 'policycoreutils-python'
         }
-        RedHat: {
+        'RedHat': {
             $nrpePackageName = 'nrpe'
             $nrpeServiceName = 'nrpe'
             $masterPluginPackage = 'nagios-plugins'
@@ -36,11 +36,11 @@ class nagiosclient::params {
     # defaults for all plugin classes
     $plugin_present = true
     case $::osfamily {
-        Debian: {
+        'Debian': {
             $plugin_path = '/usr/lib/nagios/plugins'
             $plugin_file_deps = Package['nagios-nrpe-server']
         }
-        RedHat: {
+        'RedHat': {
             $plugin_path = '/usr/lib64/nagios/plugins'
             $plugin_file_deps = [Package['nagios-plugins'], Package['nrpe']]
         }
@@ -51,11 +51,11 @@ class nagiosclient::params {
 
     # defaults for mysql_replicaiton plugin
     case $::osfamily {
-        Debian: {
+        'Debian': {
             $mysql_rep_plugin_ruby_dev_package = 'ruby-dev'
             $mysql_rep_mysql_dev_package = 'libmysqlclient-dev'
         }
-        RedHat: {
+        'RedHat': {
             $mysql_rep_plugin_ruby_dev_package = 'ruby-devel'
             if (versioncmp($::operatingsystemrelease,'7') >= 0 and $::operatingsystem != 'Fedora') {
                 $mysql_rep_mysql_dev_package = 'mysql-community-devel'
@@ -70,10 +70,10 @@ class nagiosclient::params {
 
     # defaults for readonly_fs plugin
     case $::osfamily {
-        Debian: {
+        'Debian': {
             $readonly_fs_nagios_perl_package = false
         }
-        RedHat: {
+        'RedHat': {
             $readonly_fs_nagios_perl_package = 'nagios-plugins-perl'
         }
         default: {

@@ -10,8 +10,8 @@ describe 'nagiosclient', :type => 'class' do
     it { expect { should contain_file('/etc/nagios/nrpe_local.cfg') }.to raise_error(Puppet::Error) }
   end
 
-  client = 'client'
-  environment = 'environment'
+  client = 'client_test'
+  environment = 'environment_test'
 
   deb_package = 'nagios-nrpe-server'
   deb_service = 'nagios-nrpe-server'
@@ -19,8 +19,8 @@ describe 'nagiosclient', :type => 'class' do
     let(:facts) {{
       :osfamily => 'Debian',
       :client => client,
-      :environment => environment,
     }}
+    let(:environment) { environment }
     it do
       should contain_package(deb_package).with_ensure('installed')
       should contain_file('/etc/nagios/nrpe_local.cfg').with(
@@ -47,9 +47,10 @@ describe 'nagiosclient', :type => 'class' do
   context "Should install package, service and config file on RedHat" do
     let(:facts) {{
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '6',
       :client => client,
-      :environment => environment,
     }}
+    let(:environment) { environment }
     it do
       should contain_package(red_package).with_ensure('installed')
       should contain_package('nagios-plugins').with_ensure('installed')
@@ -72,15 +73,14 @@ describe 'nagiosclient', :type => 'class' do
     end
   end
 
-  custom_plugins     = ['mysql_replication_plugin', 'postgres_plugin']
+  custom_plugins     = ['nagiosclient::mysql_replication_plugin', 'nagiosclient::postgres_plugin']
 
   context "Should install package, service, config file and mysql replication/postgres plugins on Debian" do
     let(:facts) {{
       :osfamily => 'Debian',
       :client => client,
-      :environment => environment,
     }}
-
+    let(:environment) { environment }
     let(:params) {
       { :custom_plugins => custom_plugins }
     }
@@ -130,10 +130,10 @@ describe 'nagiosclient', :type => 'class' do
   context "Should install package, service, config file and mysql replication/postgres plugins on RedHat" do
     let(:facts) {{
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '6',
       :client => client,
-      :environment => environment,
     }}
-
+    let(:environment) { environment }
     let(:params) {
       { :custom_plugins => custom_plugins }
     }
@@ -190,9 +190,9 @@ describe 'nagiosclient', :type => 'class' do
     let(:facts) {{
       :osfamily => 'Debian',
       :client => client,
-      :environment => environment,
       :host => host_custom_plugins,
     }}
+    let(:environment) { environment }
     let(:params) {
       { :custom_plugins => custom_plugins }
     }
@@ -228,9 +228,10 @@ describe 'nagiosclient', :type => 'class' do
   context "Should install package, service, config file and plugin packages on RedHat" do
     let(:facts) {{
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '6',
       :client => client,
-      :environment => environment,
     }}
+    let(:environment) { environment }
     let(:params) {
       { :plugin_packages => red_plugin_packages }
     }

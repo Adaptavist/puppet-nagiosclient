@@ -9,4 +9,5 @@ PuppetLint.configuration.send('disable_quoted_booleans')
 PuppetLint.configuration.send('disable_variable_is_lowercase')
 PuppetLint.configuration.send('disable_140chars')
 
-task :default => [:spec, :lint]
+ENV['STRICT_VARIABLES']='no'
+task :default => [:spec, :lint, :syntax]
