@@ -73,9 +73,9 @@ describe 'nagiosclient', :type => 'class' do
     end
   end
 
-  custom_plugins     = ['nagiosclient::mysql_replication_plugin', 'nagiosclient::postgres_plugin']
+  custom_plugins     = ['nagiosclient::mysql_replication_plugin', 'nagiosclient::postgres_plugin','nagiosclient::readonly_filesystem_plugin', 'nagiosclient::svn_replication_plugin']
 
-  context "Should install package, service, config file and mysql replication/postgres plugins on Debian" do
+  context "Should install package, service, config file and mysql replication/postgres/readonly fs/svn replication plugins on Debian" do
     let(:facts) {{
       :osfamily => 'Debian',
       :client => client,
@@ -124,10 +124,23 @@ describe 'nagiosclient', :type => 'class' do
         'ensure' => 'running',
         'enable' => 'true'
       )
+      should contain_file('/usr/lib/nagios/plugins/check-svn-replication.sh').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+        'source'  => "puppet:///modules/nagiosclient/check-svn-replication.sh"
+      )
+      should contain_file('/usr/lib/nagios/plugins/check_ro_mounts.pl').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755'
+      )
     end
   end
 
-  context "Should install package, service, config file and mysql replication/postgres plugins on RedHat" do
+  context "Should install package, service, config file and mysql replication/postgres/readonlyfs/svn replication plugins on RedHat" do
     let(:facts) {{
       :osfamily => 'RedHat',
       :operatingsystemrelease => '6',
@@ -178,6 +191,19 @@ describe 'nagiosclient', :type => 'class' do
       should contain_service(red_service).with(
         'ensure' => 'running',
         'enable' => 'true'
+      )
+      should contain_file('/usr/lib64/nagios/plugins/check-svn-replication.sh').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+        'source'  => "puppet:///modules/nagiosclient/check-svn-replication.sh"
+      )
+      should contain_file('/usr/lib64/nagios/plugins/check_ro_mounts.pl').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755'
       )
     end
   end
