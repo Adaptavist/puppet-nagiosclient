@@ -1,7 +1,7 @@
 class nagiosclient::params {
 
     # defaults for init
-    $custom_plugins = ['nagiosclient::readonly_filesystem_plugin']
+    $custom_plugins = ['nagiosclient::readonly_filesystem_plugin', 'nagiosclient::kernel_check_plugin']
     $merge_plugins  = true
     $plugin_packages = {
         'Debian' => [],

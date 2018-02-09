@@ -73,9 +73,9 @@ describe 'nagiosclient', :type => 'class' do
     end
   end
 
-  custom_plugins     = ['nagiosclient::mysql_replication_plugin', 'nagiosclient::postgres_plugin','nagiosclient::readonly_filesystem_plugin', 'nagiosclient::svn_replication_plugin']
+  custom_plugins     = ['nagiosclient::mysql_replication_plugin', 'nagiosclient::postgres_plugin','nagiosclient::readonly_filesystem_plugin', 'nagiosclient::svn_replication_plugin', 'nagiosclient::kernel_check_plugin']
 
-  context "Should install package, service, config file and mysql replication/postgres/readonly fs/svn replication plugins on Debian" do
+  context "Should install package, service, config file and mysql replication/postgres/readonly fs/svn replication/kernel plugins on Debian" do
     let(:facts) {{
       :osfamily => 'Debian',
       :client => client,
@@ -130,6 +130,13 @@ describe 'nagiosclient', :type => 'class' do
         'group'   => 'root',
         'mode'    => '0755',
         'source'  => "puppet:///modules/nagiosclient/check-svn-replication.sh"
+      )
+      should contain_file('/usr/lib/nagios/plugins/check-installed-kernel.sh').with(
+        'ensure'  => 'file',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0755',
+        'source'  => "puppet:///modules/nagiosclient/check-installed-kernel.sh"
       )
       should contain_file('/usr/lib/nagios/plugins/check_ro_mounts.pl').with(
         'ensure'  => 'file',
