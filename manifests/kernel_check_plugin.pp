@@ -8,11 +8,12 @@ class nagiosclient::kernel_check_plugin (
     if ($present == true) {
         # create plugin script
         file { "${plugin_path}/check-installed-kernel.sh":
-            ensure => file,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-            source => 'puppet:///modules/nagiosclient/check-installed-kernel.sh',
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            source  => 'puppet:///modules/nagiosclient/check-installed-kernel.sh',
+            require => $file_deps,
         }
 
         # if selinux is enabled, restore default contexts to plugin directory
