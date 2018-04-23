@@ -18,7 +18,7 @@ class nagiosclient::kernel_check_plugin (
 
         # if selinux is enabled, restore default contexts to plugin directory
         if (str2bool($::selinux)) {
-            exec { 'readonly_filesystem_plugin_selinux_context':
+            exec { 'kernel_check_plugin_selinux_context':
                 command => "restorecon -R -v ${plugin_path}",
                 require => [Package[$semanage_package],File["${plugin_path}/check-installed-kernel.sh"]],
             }
