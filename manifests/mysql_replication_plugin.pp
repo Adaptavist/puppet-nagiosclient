@@ -4,7 +4,8 @@ class nagiosclient::mysql_replication_plugin (
     $plugin_path       = $nagiosclient::params::plugin_path,
     $ruby_dev_package  = $nagiosclient::params::mysql_rep_plugin_ruby_dev_package,
     $mysql_dev_package = $nagiosclient::params::mysql_rep_mysql_dev_package,
-    $semanage_package    = $nagiosclient::params::semanage_package,
+    $mysql_gem_package = $nagiosclient::params::mysql_rep_mysql_gem_package,
+    $semanage_package  = $nagiosclient::params::semanage_package,
     ) inherits nagiosclient::params {
 
     if ($present == true) {
@@ -35,7 +36,7 @@ class nagiosclient::mysql_replication_plugin (
             ensure      => installed,
         }
         # install the mysql gem
-        package { 'mysql':
+        package { $mysql_gem_package:
             ensure   => installed,
             provider => gem,
             require  => [Package[$ruby_dev_package], Package[$mysql_dev_package]]

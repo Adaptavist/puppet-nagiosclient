@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'mysql'
+require 'mysql2'
 require 'optparse'
 
 #define functions
@@ -64,17 +64,17 @@ OptionParser.new do |opts|
 end.parse!
 
 begin
-	db = Mysql.new(db_host, db_user, db_pass, db_name, db_port)
-	results = db.query 'show slave status'
+  db = Mysql2::Client.new(:host => db_host, :username => db_user, :password => db_pass, :database => db_name, :port => db_port)
+  results = db.query 'show slave status'
 
-	if results.nil?
+  if results.nil? or results.count == 0
     critical "No slave status, this server is not a slave??."
   else
-    if results.num_rows != expected_rows
-      critical "Query returned #{results.num_rows} rows"
+    if results.count != expected_rows
+      critical "Query returned #{results.count} rows"
     end
 
-    results.each_hash do |row|
+    results.each do |row|
       if row['Slave_IO_Running'] != "Yes"
         critical "Replication problem: Slave IO not running!"
       elsif row['Slave_SQL_Running'] != "Yes"
@@ -93,7 +93,7 @@ begin
   end
 
 
-  rescue Mysql::Error => e
+  rescue Mysql2::Error => e
     unknown "Mysql Error - Error code: #{e.errno} Error message: #{e.error}"
   rescue => e
     unknown "General Error - #{e}"

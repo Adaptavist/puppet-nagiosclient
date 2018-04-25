@@ -50,6 +50,7 @@ class nagiosclient::params {
     }
 
     # defaults for mysql_replicaiton plugin
+    $mysql_rep_mysql_gem_package = 'mysql2'
     case $::osfamily {
         'Debian': {
             $mysql_rep_plugin_ruby_dev_package = 'ruby-dev'
