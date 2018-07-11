@@ -108,6 +108,6 @@ class nagiosclient  (
     # if we need to set any NRPE command values do so
     if ($nrpe_commands) {
         validate_hash($nrpe_commands)
-        create_resources('nagiosclient::command', $nrpe_commands, {'require' => "File[$nrpe_config_file]", 'notify' => "Service[$serviceName]"})
+        create_resources('nagiosclient::command', $nrpe_commands, {'require' => "File[${nrpe_config_file}]", 'notify' => "Service[${serviceName}]"})
     }
 }
