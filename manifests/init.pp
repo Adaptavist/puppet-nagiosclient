@@ -8,6 +8,7 @@ class nagiosclient  (
     $serviceName         = $nagiosclient::params::nrpeServiceName,
     $masterPluginPackage = $nagiosclient::params::masterPluginPackage,
     $semanage_package    = $nagiosclient::params::semanage_package,
+    $nrpe_commands       = $nagiosclient::params::nrpe_commands,
     ) inherits nagiosclient::params {
 
     #custom_plugins can be set at either global or host level, therefore check to see if the hosts hash exists
@@ -102,5 +103,11 @@ class nagiosclient  (
     service { $serviceName:
         ensure => 'running',
         enable => true,
+    }
+
+    # if we need to set any NRPE command values do so
+    if ($nrpe_commands) {
+        validate_hash($nrpe_commands)
+        create_resources('nagiosclient::command', $nrpe_commands, {'require' => "File[$nrpe_config_file]", 'notify' => "Service[$serviceName]"})
     }
 }
