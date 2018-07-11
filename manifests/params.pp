@@ -39,10 +39,18 @@ class nagiosclient::params {
         'Debian': {
             $plugin_path = '/usr/lib/nagios/plugins'
             $plugin_file_deps = Package['nagios-nrpe-server']
+            $nrpe_commands = {}
         }
         'RedHat': {
             $plugin_path = '/usr/lib64/nagios/plugins'
             $plugin_file_deps = [Package['nagios-plugins'], Package['nrpe']]
+            $nrpe_commands = {
+                'check_load' => {
+                    command => "${plugin_path}/check_load -w 15,10,5 -c 30,25,20",
+                    file => '/etc/nagios/nrpe.cfg',
+                    ensure => 'present'
+                }
+            }
         }
         default: {
             fail("nagiosclient - Unsupported Operating System family: ${::osfamily}")
