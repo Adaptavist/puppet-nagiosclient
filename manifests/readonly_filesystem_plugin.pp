@@ -9,8 +9,10 @@ class nagiosclient::readonly_filesystem_plugin (
     if ($present == true) {
         # install nagios_perl_pacakge if required
         if ($nagios_perl_package != false and $nagios_perl_package != 'false') {
-            package { $nagios_perl_package:
-                ensure      => installed,
+            if ( !defined(Package[$nagios_perl_package])) {
+                package { $nagios_perl_package:
+                    ensure      => installed,
+                }
             }
         }
 

@@ -94,10 +94,15 @@ class nagiosclient  (
     # install any plugin packages that are needed, this is important for RedHat systems as all plugins
     # ship in their own package
     if ( $plugin_packages_list[$::osfamily] != undef ) {
-        package { $plugin_packages_list[$::osfamily]:
-            ensure  => installed,
-            require => Package[$packageName]
+        $plugin_packages_list[$::osfamily].each |$plugin_package| {
+            if ( !defined(Package[$plugin_package]) ) {
+                package {$plugin_package:
+                    ensure  => installed,
+                    require => Package[$packageName]
+                }
+            }
         }
+
     }
 
     service { $serviceName:
