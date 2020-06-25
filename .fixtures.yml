@@ -1,5 +1,8 @@
 fixtures:
   repositories:
+    stdlib:
       repo: "https://github.com/Adaptavist/puppetlabs-stdlib"
+    augeas_core:
+      repo: "https://github.com/Adaptavist/puppetlabs-augeas_core"
   symlinks:
     nagiosclient: "#{source_dir}"

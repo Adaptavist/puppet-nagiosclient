@@ -1,5 +1,5 @@
 name 'adaptavist-nagiosclient'
-version '1.0.7'
+version '1.0.8'
 source 'https://github.com/Adaptavist/puppet-nagiosclient.git'
 author 'adaptavist'
 summary 'Nagiosclient Module' 
@@ -8,3 +8,4 @@ description 'This contains the configuration for the Nagios NRPE server (the par
 project_page 'https://github.com/Adaptavist/puppet-nagiosclient'
 
 ## Add dependencies, if any:
+dependency 'puppetlabs/augeas_core ', '>= 1.0.5'

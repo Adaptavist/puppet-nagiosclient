@@ -296,7 +296,7 @@ describe 'nagiosclient', :type => 'class' do
     let(:facts) {{ :osfamily => 'Solaris' }}
 
     it do
-      should raise_error(Puppet::Error, /nagiosclient - Unsupported Operating System family: Solaris at/)
+      should raise_error(Puppet::Error, /nagiosclient - Unsupported Operating System family: Solaris/)
     end
   end
 
